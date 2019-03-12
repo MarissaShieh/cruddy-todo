@@ -17,25 +17,21 @@ exports.create = (text, callback) => {
       }
     });
   });
-
-  
-  //grab latest counter from counter.txt
-  //write a new file w/ that "ID".txt to dataDir
-  //put text into that file
-  // fs.writeFile(, counterString, (err) => {
-  //   if (err) {
-  //     throw ('error writing counter');
-  //   } else {
-  //     callback(null, counterString);
-  //   }
-  // });
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  fs.readdir(exports.dataDir, (err, arrayOfFileNames) => {
+    if (err) {
+      throw ('error reading all files')
+    } else {
+      var data = _.map(arrayOfFileNames, (filenameTxt) => {
+        var filePathArr = filenameTxt.split('.'); //eg ['00003',"txt"]
+        var id = filePathArr[0]
+        return { id, text: id };
+      });
+      callback(null, data);
+    }
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
