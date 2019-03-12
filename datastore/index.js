@@ -9,13 +9,11 @@ var items = {};
 
 exports.create = (text, callback) => {
   counter.getNextUniqueId( (err, id ) => {
-    fs.writeFile(path.join(dataDir, `${id}.txt`), text, (err) => {
-    if (err) {
-      throw ('error creating new file');
-    } else {
-      //put the .JSON(text) into the file
-    }
-  });
+    fs.writeFile(path.join(exports.dataDir, `${id}.txt`), text, (err) => {
+      if (err) {
+        throw ('error creating new file');
+      } 
+    });
     callback(null, { id, text } );
   });
 
