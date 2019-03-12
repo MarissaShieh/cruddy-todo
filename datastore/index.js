@@ -22,11 +22,11 @@ exports.create = (text, callback) => {
 exports.readAll = (callback) => {
   fs.readdir(exports.dataDir, (err, arrayOfFileNames) => {
     if (err) {
-      throw ('error reading all files')
+      throw ('error reading all files');
     } else {
       var data = _.map(arrayOfFileNames, (filenameTxt) => {
         var filePathArr = filenameTxt.split('.'); //eg ['00003',"txt"]
-        var id = filePathArr[0]
+        var id = filePathArr[0];
         return { id, text: id };
       });
       callback(null, data);
@@ -35,22 +35,31 @@ exports.readAll = (callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  fs.readFile(path.join(exports.dataDir, `${id}.txt`), (err, text)=>{
+    if (err) {
+      callback(new Error(`No item with id: ${id}`))
+    } else {
+      callback(null, {id, text: text.toString()});
+    }
+  });
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  fs.writeFile(path.join(exports.dataDir, `${id}.txt`), text, (err) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      callback(null, { id, text });
+    }
+  });
+
+  // var item = items[id];
+  // if (!item) {
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   items[id] = text;
+  //   callback(null, { id, text });
+  // }
 };
 
 exports.delete = (id, callback) => {
