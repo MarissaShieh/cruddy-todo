@@ -12,9 +12,10 @@ exports.create = (text, callback) => {
     fs.writeFile(path.join(exports.dataDir, `${id}.txt`), text, (err) => {
       if (err) {
         throw ('error creating new file');
-      } 
+      } else {
+        callback(null, { id, text } ); //don't read file until file written
+      }
     });
-    callback(null, { id, text } );
   });
 
   
