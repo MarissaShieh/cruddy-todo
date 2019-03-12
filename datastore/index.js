@@ -8,9 +8,28 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
- counter.getNextUniqueId( (err, id ) => {callback(null, { id, text })});
-  // items[id] = text;
-  // callback(null, { id, text });
+  counter.getNextUniqueId( (err, id ) => {
+    fs.writeFile(path.join(dataDir, `${id}.txt`), text, (err) => {
+    if (err) {
+      throw ('error creating new file');
+    } else {
+      //put the .JSON(text) into the file
+    }
+  });
+    callback(null, { id, text } );
+  });
+
+  
+  //grab latest counter from counter.txt
+  //write a new file w/ that "ID".txt to dataDir
+  //put text into that file
+  // fs.writeFile(, counterString, (err) => {
+  //   if (err) {
+  //     throw ('error writing counter');
+  //   } else {
+  //     callback(null, counterString);
+  //   }
+  // });
 };
 
 exports.readAll = (callback) => {
